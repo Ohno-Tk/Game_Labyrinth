@@ -1,8 +1,4 @@
 /*=============================================================================
-
-	main.c
-
--------------------------------------------------------------------------------
   Author
 	Ohno Takuya
 
@@ -18,33 +14,23 @@
 	include
 -----------------------------------------------------------------------------*/
 #include <stdio.h>
+#include "Game.h"
+#include "Clear.h"
+#include "GameOver.h"
+#include "main.h"
+
 
 /*-----------------------------------------------------------------------------
-	Macro
+	Prototype
 -----------------------------------------------------------------------------*/
-#define MAP_W (50)/*MAP_Width*/
-#define MAP_H (23)/*MAP_Height*/
-
-#define Clear_W (79)/*Clear_Width*/
-#define Clear_H (25)/*Clear_Height*/
-
-#define Gameover_W (79)/*Gameoverの横幅*/
-#define Gameover_H (50)/*Gameover_Height*/
-
-#define TIME (100)
+int Update(void);
+int Draw(void);
 
 /*-----------------------------------------------------------------------------
-	プロトタイプ宣言
+	Global
 -----------------------------------------------------------------------------*/
-int meiro(void);
-int Clear(void);
-int Gameover(void);
-
-/*-----------------------------------------------------------------------------
-	グローバル変数
------------------------------------------------------------------------------*/
-int Time;
-int choose = 0;
+int g_Time;
+MODE g_mode = MODE_GAME;// Now Mode
 
 /*-----------------------------------------------------------------------------
 	main
@@ -52,280 +38,53 @@ int choose = 0;
 int  main(void)
 {
 
+	ChangeMode(g_mode);
+
 	for (;;)
 	{
-		meiro();
-		system("cls");
+		Update();
 
-		if (Time != 0)
-		{
-			Clear();
-		}
-		else
-		{
-			Gameover();
-		}
+		Draw();
 	}
 
 	return 0;
 }
 
-/*-----------------------------------------------------------------------------
-	ゲーム
------------------------------------------------------------------------------*/
-int meiro(void)
+
+int Update(void)
 {
-	Time = TIME;
+	Mode _UpdateFunction[] = {
+	UpdateGame,
+	UpdateClear,
+	UpdateGameOver
+	};
 
-
-	char MAPdata[MAP_H][MAP_W] = {
-		"||G--------------------------------------------**",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"|| * * * * * * * * * * * * * * * * * * * * * * ||",
-		"||                                             ||",
-		"**---------------------------------------------**" };
-	int x, y, z;/*繰り返す変数*/
-	int DAM;/*ランダム変数*/
-	int player_x = 46, player_y = 21;/*プレイヤーの座標*/
-	char key;/*移動処理に使う変数*/
-	srand((unsigned)time(NULL));
-
-	/*上下左右に壁を出現*/
-	for (z = 2;z < 21;z += 2)
-	{
-		for (x = 3;x < 46;x += 2)
-		{
-			DAM = rand() % 4;
-			if (DAM == 0)/*左*/
-			{
-				MAPdata[z][x - 1] = '*';
-			}
-			else if (DAM == 1)/*上*/
-			{
-				MAPdata[z - 1][x] = '*';
-			}
-			else if (DAM == 2)/*下*/
-			{
-				MAPdata[z][x + 1] = '*';
-			}
-			else if (DAM == 3)/*右*/
-			{
-				MAPdata[z + 1][x] = '*';
-			}
-		}
-	}
-
-	while (MAPdata[player_y][player_x] != 'G' && Time != 0)
-	{
-		system("cls");
-		MAPdata[player_y][player_x] = 'P';/*プレイヤーの表示*/
-
-		/*マップ表示*/
-		for (y = 0;y < MAP_H;y++)
-		{
-			printf("%s", &MAPdata[y][0]);
-			printf("\n");
-		}
-
-		/*移動処理*/
-		printf("操作方法::←　→　↑　↓　 Ｇを目指せ！！　残りターン:%3d\n", Time);
-
-		MAPdata[player_y][player_x] = ' ';/*座標更新*/
-
-		key = _getch();/*キーの取得*/
-		if (key == 72)/*↑キー*/
-		{
-			player_y--;
-			Time--;
-			/*壁との当たり判定*/
-			if (MAPdata[player_y][player_x] == '*' || MAPdata[player_y][player_x] == '-')
-			{
-				player_y++;
-				Time++;
-			}
-		}
-		else if (key == 80)/*↓キー*/
-		{
-			player_y++;
-			Time--;
-			/*壁との当たり判定*/
-			if (MAPdata[player_y][player_x] == '*' || MAPdata[player_y][player_x] == '-')
-			{
-				player_y--;
-				Time++;
-			}
-		}
-		else if (key == 75)/*←キー*/
-		{
-			player_x--;
-			Time--;
-			/*壁との当たり判定*/
-			if (MAPdata[player_y][player_x] == '*' || MAPdata[player_y][player_x] == '|')
-			{
-				player_x++;
-				Time++;
-			}
-		}
-		else if (key == 77)/*→キー*/
-		{
-			player_x++;
-			Time--;
-			/*壁との当たり判定*/
-			if (MAPdata[player_y][player_x] == '*' || MAPdata[player_y][player_x] == '|')
-			{
-				player_x--;
-				Time++;
-			}
-		}
-	}
-	return 0;
+	_UpdateFunction[g_mode]();
 }
 
-/*-----------------------------------------------------------------------------
-	クリア
------------------------------------------------------------------------------*/
-int Clear(void)
+int Draw(void)
 {
-	char Cleardata[Clear_H][Clear_W] = {
+	Mode _DrawFunction[] = {
+	DrawGame,
+	DrawClear,
+	DrawGameOver
+	};
 
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　●●●●●●　●　　●　　●●●●●●●●　　　●　　●　",
-		"　　　　　　　　●　　　　●　　●　　●　　　　　　　　●　　　　●　　●　",
-		"　　　　　　　●　　　　●　　　●　　●　　　　　●　●　　　　　●　　●　",
-		"　　　　　　　　　　　●　　　　●　　●　　　　　●　　　　　　　●　　●　",
-		"　　　　　　　　　　●　　　　　　　　●　　　　　●　　　　　　　●　　●　",
-		"　　　　　　　　　●　　　　　　　　●　　　　　　●　　　　　　　●　　●　",
-		"　　　　　　　　●　　　　　　　　●　　　　　　●　　　　　　　　　　　　　",
-		"　　　　　　　●　　　　　　　　●　　　　　　●　　　　　　　　　●　　●　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　ＰＬＥＡＳＥ　　ＭＥ　　ＥＮＴＥＲ　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" };
-	int y;
-
-	for (y = 0;y < Clear_H;y++)
-	{
-		printf("%s", &Cleardata[y][0]);
-		printf("\n");
-	}
-
-
-	rewind(stdin);
-	getchar();
-	system("cls");
-
-	return 0;
+	_DrawFunction[g_mode]();
 }
 
-/*-----------------------------------------------------------------------------
-	ゲームオーバー
------------------------------------------------------------------------------*/
-int Gameover(void)
+void ChangeMode(MODE mode)
 {
-	char Gameoverdata[Gameover_H][Gameover_W] = {
+	Mode _InitializeFunction[] = {
+	InitializeGame,
+	InitializeClear,
+	InitializeGameOver
+	};
+	
+	_InitializeFunction[mode]();
 
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"    *****      *      *       *  ******   *****    *       *  ******  ******  ",
-		"   *          * *     * *   * *  *       *     *    *     *   *       *     * ",
-		"  *   ***    *   *    *  * *  *  *****  *       *    *   *    *****   ******  ",
-		"   *    *   *******   *   *   *  *       *     *      * *     *       *   *   ",
-		"    *****  *       *  *       *  ******   *****        *      ******  *    *  ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                          PLEASE  ME  ENTER                                   ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
+	g_mode = mode;
 
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                   +----------------------------------+                       ",
-		"                   |                                  |                       ",
-		"                   | 制限時間前にゴールを目指そう！！ |                       ",
-		"                   |                                  |                       ",
-		"                   | ENTERを押して下さい・・・        |                       ",
-		"                   |                                  |                       ",
-		"                   +----------------------------------+                       ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              ",
-		"                                                                              " };
-	int y;
-
-	for (y = 0;y < 25;y++)
-	{
-		printf("%s", &Gameoverdata[y][0]);
-		printf("\n");
-	}
-
-	rewind(stdin);
-	getchar();
 	system("cls");
 
-	for (;y < Gameover_H;y++)
-	{
-		printf("%s", &Gameoverdata[y][0]);
-		printf("\n");
-	}
-
-	rewind(stdin);
-	getchar();
-	system("cls");
-
-	return 0;
 }
