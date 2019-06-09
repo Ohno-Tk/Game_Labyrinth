@@ -3,6 +3,11 @@
 /*-----------------------------------------------------------------------------
 	Function
 -----------------------------------------------------------------------------*/
-int InitializeGame(void);
-int UpdateGame(void);
-int DrawGame(void);
+void InitializeGame(void);
+void UpdateGame(void);
+void DrawGame(void);
+
+char GetMap(int x, int y);
+void SetMap(int x, int y, char icon);
+
+void SubTime(void);

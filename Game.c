@@ -6,10 +6,11 @@
 	2017/6/6
 =============================================================================*/
 /*-----------------------------------------------------------------------------
-	include
+	Include
 -----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include "main.h"
+#include "Player.h"
 #include "Game.h"
 
 /*-----------------------------------------------------------------------------
@@ -19,16 +20,14 @@
 #define MAP_HEIGHT (23)/*MAP_Height*/
 #define TIME (100)
 
-typedef struct
-{
-	int x;
-	int y;
-}Vector2;
+/*-----------------------------------------------------------------------------
+	Function
+-----------------------------------------------------------------------------*/
+void Goal(void);
 
 /*-----------------------------------------------------------------------------
 	Global
 -----------------------------------------------------------------------------*/
-Vector2 g_PlayerPosition;
 int g_Time;
 char g_MAPdata[MAP_HEIGHT][MAP_WIDTH] = {
 		"||G--------------------------------------------**",
@@ -56,12 +55,13 @@ char g_MAPdata[MAP_HEIGHT][MAP_WIDTH] = {
 		"**---------------------------------------------**" };
 
 
-int InitializeGame(void)
+void InitializeGame(void)
 {
-	g_PlayerPosition.x = 46;
-	g_PlayerPosition.y = 21;
+	srand((unsigned)time(NULL));
 
 	g_Time = TIME;
+
+	InitializePlayer();
 
 	int x, z;
 	int _random;
@@ -91,32 +91,21 @@ int InitializeGame(void)
 	}
 }
 
-int UpdateGame(void)
+void UpdateGame(void)
 {
-	
+	Goal();
+
+	UpdatePlayer();
 }
 
-int DrawGame(void)
+void DrawGame(void)
 {
 	int y;
-	char key;/*移動処理に使う変数*/
-	srand((unsigned)time(NULL));
-
-
-	if (g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] != 'G' && g_Time == 0)
-	{
-		ChangeMode(MODE_GAMEOVER);
-		return 0;
-	}
-	else if(g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == 'G')
-	{
-		ChangeMode(MODE_CLEAR);
-		return 0;
-	}
 
 	
 	system("cls");
-	g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] = 'P';/*プレイヤーの表示*/
+
+	DrawPlayer();
 
 	/*マップ表示*/
 	for (y = 0;y < MAP_HEIGHT;y++)
@@ -125,56 +114,34 @@ int DrawGame(void)
 		printf("\n");
 	}
 
+
 	/*移動処理*/
 	printf("操作方法::←　→　↑　↓　 Ｇを目指せ！！　残りターン:%3d\n", g_Time);
+}
 
-	g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] = ' ';/*座標更新*/
+char GetMap(int x, int y)
+{
+	return g_MAPdata[y][x];
+}
 
-	key = _getch();/*キーの取得*/
-	if (key == 72)/*↑キー*/
+void SetMap(int x, int y, char icon)
+{
+	g_MAPdata[y][x] = icon;
+}
+
+void SubTime(void)
+{
+	g_Time--;
+}
+
+void Goal(void)
+{
+	if (g_MAPdata[GetPlayerPosition().y][GetPlayerPosition().x] == 'G')
 	{
-		g_PlayerPosition.y--;
-		g_Time--;
-		/*壁との当たり判定*/
-		if (g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '*' || g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '-')
-		{
-			g_PlayerPosition.y++;
-			g_Time++;
-		}
+		ChangeMode(MODE_CLEAR);
 	}
-	else if (key == 80)/*↓キー*/
+	else if (g_Time == 0)
 	{
-		g_PlayerPosition.y++;
-		g_Time--;
-		/*壁との当たり判定*/
-		if (g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '*' || g_MAPdata[g_PlayerPosition.x][g_PlayerPosition.x] == '-')
-		{
-			g_PlayerPosition.y--;
-			g_Time++;
-		}
+		ChangeMode(MODE_GAMEOVER);
 	}
-	else if (key == 75)/*←キー*/
-	{
-		g_PlayerPosition.x--;
-		g_Time--;
-		/*壁との当たり判定*/
-		if (g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '*' || g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '|')
-		{
-			g_PlayerPosition.x++;
-			g_Time++;
-		}
-	}
-	else if (key == 77)/*→キー*/
-	{
-		g_PlayerPosition.x++;
-		g_Time--;
-		/*壁との当たり判定*/
-		if (g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '*' || g_MAPdata[g_PlayerPosition.y][g_PlayerPosition.x] == '|')
-		{
-			g_PlayerPosition.x--;
-			g_Time++;
-		}
-	}
-	
-	return 0;
 }
