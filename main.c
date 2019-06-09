@@ -31,6 +31,8 @@
 #define Gameover_W (79)/*Gameoverの横幅*/
 #define Gameover_H (50)/*Gameover_Height*/
 
+#define TIME (100)
+
 /*-----------------------------------------------------------------------------
 	プロトタイプ宣言
 -----------------------------------------------------------------------------*/
@@ -41,7 +43,7 @@ int Gameover(void);
 /*-----------------------------------------------------------------------------
 	グローバル変数
 -----------------------------------------------------------------------------*/
-int Time = 100;
+int Time;
 int choose = 0;
 
 /*-----------------------------------------------------------------------------
@@ -49,21 +51,21 @@ int choose = 0;
 -----------------------------------------------------------------------------*/
 int  main(void)
 {
-	meiro();
-	system("cls");
 
-	if (Time != 0)
+	for (;;)
 	{
-		Clear();
-	}
-	else
-	{
-		Gameover();
-	}
+		meiro();
+		system("cls");
 
-	rewind(stdin);
-	getchar();
-	system("cls");
+		if (Time != 0)
+		{
+			Clear();
+		}
+		else
+		{
+			Gameover();
+		}
+	}
 
 	return 0;
 }
@@ -73,6 +75,9 @@ int  main(void)
 -----------------------------------------------------------------------------*/
 int meiro(void)
 {
+	Time = TIME;
+
+
 	char MAPdata[MAP_H][MAP_W] = {
 		"||G--------------------------------------------**",
 		"||                                             ||",
@@ -233,6 +238,12 @@ int Clear(void)
 		printf("%s", &Cleardata[y][0]);
 		printf("\n");
 	}
+
+
+	rewind(stdin);
+	getchar();
+	system("cls");
+
 	return 0;
 }
 
@@ -311,5 +322,10 @@ int Gameover(void)
 		printf("%s", &Gameoverdata[y][0]);
 		printf("\n");
 	}
+
+	rewind(stdin);
+	getchar();
+	system("cls");
+
 	return 0;
 }
