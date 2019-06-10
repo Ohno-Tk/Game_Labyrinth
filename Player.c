@@ -16,6 +16,7 @@
 	Function
 -----------------------------------------------------------------------------*/
 void Move(void);
+void Collision(char collisionLetters);
 
 /*-----------------------------------------------------------------------------
 	Global
@@ -53,54 +54,42 @@ void Move(void)
 	if (_key == 72)/*Å™*/
 	{
 		g_Position.y--;
-		/*ï«Ç∆ÇÃìñÇΩÇËîªíË*/
-		if (GetMap(g_Position.x, g_Position.y) == '*' || GetMap(g_Position.x, g_Position.y) == '-')
-		{
-			g_Position = g_OldPosition;
-		}
-		else
-		{
-			SubTime();
-		}
+
+		Collision('*');
+		Collision('-');
 	}
 	else if (_key == 80)/*Å´*/
 	{
 		g_Position.y++;
-		/*ï«Ç∆ÇÃìñÇΩÇËîªíË*/
-		if (GetMap(g_Position.x, g_Position.y) == '*' || GetMap(g_Position.x, g_Position.y) == '-')
-		{
-			g_Position = g_OldPosition;
-		}
-		else
-		{
-			SubTime();
-		}
+
+		Collision('*');
+		Collision('-');
 	}
 	else if (_key == 75)/*Å©*/
 	{
 		g_Position.x--;
-		/*ï«Ç∆ÇÃìñÇΩÇËîªíË*/
-		if (GetMap(g_Position.x, g_Position.y) == '*' || GetMap(g_Position.x, g_Position.y) == '|')
-		{
-			g_Position = g_OldPosition;
-		}
-		else
-		{
-			SubTime();
-		}
+
+		Collision('*');
+		Collision('|');
 	}
 	else if (_key == 77)/*Å®ÉLÅ[*/
 	{
 		g_Position.x++;
-		/*ï«Ç∆ÇÃìñÇΩÇËîªíË*/
-		if (GetMap(g_Position.x, g_Position.y) == '*' || GetMap(g_Position.x, g_Position.y) == '|')
-		{
-			g_Position = g_OldPosition;
-		}
-		else
-		{
-			SubTime();
-		}
+
+		Collision('*');
+		Collision('|');
+	}
+}
+
+void Collision(char collisionLetters)
+{
+	if (GetMap(g_Position.x, g_Position.y) == collisionLetters)
+	{
+		g_Position = g_OldPosition;
+	}
+	else
+	{
+		SubTime();
 	}
 }
 
