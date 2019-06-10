@@ -23,19 +23,19 @@
 /*-----------------------------------------------------------------------------
 	Function
 -----------------------------------------------------------------------------*/
-int Update(void);
-int Draw(void);
+void Update(void);
+void Draw(void);
 
 /*-----------------------------------------------------------------------------
 	Global
 -----------------------------------------------------------------------------*/
 int g_Time;
-MODE g_mode = MODE_GAME;// Now Mode
+MODE g_mode = MODE_CLEAR;// Now Mode
 
 /*-----------------------------------------------------------------------------
 	main
 -----------------------------------------------------------------------------*/
-int  main(void)
+void  main(void)
 {
 
 	ChangeMode(g_mode);
@@ -46,12 +46,10 @@ int  main(void)
 
 		Draw();
 	}
-
-	return 0;
 }
 
 
-int Update(void)
+void Update(void)
 {
 	Mode _UpdateFunction[] = {
 	UpdateGame,
@@ -62,7 +60,7 @@ int Update(void)
 	_UpdateFunction[g_mode]();
 }
 
-int Draw(void)
+void Draw(void)
 {
 	Mode _DrawFunction[] = {
 	DrawGame,

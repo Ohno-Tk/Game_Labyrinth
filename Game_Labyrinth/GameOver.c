@@ -19,17 +19,13 @@
 #define HEIGHT (50)
 
 
-int InitializeGameOver(void)
-{
+void InitializeGameOver(void)
+{}
 
-}
+void UpdateGameOver(void)
+{}
 
-int UpdateGameOver(void)
-{
-
-}
-
-int DrawGameOver(void)
+void DrawGameOver(void)
 {
 	char Gameoverdata[HEIGHT][WIDTH] = {
 
@@ -85,11 +81,11 @@ int DrawGameOver(void)
 		"                                                                              ",
 		"                                                                              " };
 
-	int y;
+	int _y;
 
-	for (y = 0;y < 25;y++)
+	for (_y = 0;_y < HEIGHT/2;_y++)
 	{
-		printf("%s", &Gameoverdata[y][0]);
+		printf("%s", &Gameoverdata[_y][0]);
 		printf("\n");
 	}
 
@@ -97,9 +93,9 @@ int DrawGameOver(void)
 	getchar();
 	system("cls");
 
-	for (;y < HEIGHT;y++)
+	for (;_y < HEIGHT;_y++)
 	{
-		printf("%s", &Gameoverdata[y][0]);
+		printf("%s", &Gameoverdata[_y][0]);
 		printf("\n");
 	}
 

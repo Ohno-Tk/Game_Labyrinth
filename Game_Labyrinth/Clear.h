@@ -3,6 +3,6 @@
 /*-----------------------------------------------------------------------------
 	Function
 -----------------------------------------------------------------------------*/
-int InitializeClear(void);
-int UpdateClear(void);
-int DrawClear(void);
+void InitializeClear(void);
+void UpdateClear(void);
+void DrawClear(void);
