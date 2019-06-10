@@ -19,16 +19,18 @@
 #define HEIGHT (25)/*Clear_Height*/
 
 
-int InitializeClear(void)
+void InitializeClear(void)
+{}
+
+void UpdateClear(void)
 {
+	if (_getch() == 13)
+	{
+		ChangeMode(MODE_GAME);
+	}
 }
 
-int UpdateClear(void)
-{
-
-}
-
-int DrawClear(void)
+void DrawClear(void)
 {
 	char Cleardata[HEIGHT][WIDTH] = {
 
@@ -52,26 +54,19 @@ int DrawClear(void)
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
-		"　　　　　　　　　　　ＰＬＥＡＳＥ　　ＭＥ　　ＥＮＴＥＲ　　　　　　　　　　",
+		"　　　　　　　　　　　ＰＬＥＡＳＥ　　　　　　ＥＮＴＥＲ　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　",
 		"　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　" };
 
-	int y;
+	int _y;
 
-	for (y = 0;y < HEIGHT;y++)
+	for (_y = 0; _y < HEIGHT; _y++)
 	{
-		printf("%s", &Cleardata[y][0]);
+		printf("%s", &Cleardata[_y][0]);
 		printf("\n");
 	}
-
-
-	rewind(stdin);
-	getchar();
-	system("cls");
-
-	ChangeMode(MODE_GAME);
 
 	return 0;
 }

@@ -16,7 +16,7 @@
 	Function
 -----------------------------------------------------------------------------*/
 void Move(void);
-void Collision(char collisionLetters);
+void Collision(char collisionLetters1, char collisionLetters2);
 
 /*-----------------------------------------------------------------------------
 	Global
@@ -55,35 +55,31 @@ void Move(void)
 	{
 		g_Position.y--;
 
-		Collision('*');
-		Collision('-');
+		Collision('*', '-');
 	}
 	else if (_key == 80)/*Å´*/
 	{
 		g_Position.y++;
 
-		Collision('*');
-		Collision('-');
+		Collision('*', '-');
 	}
 	else if (_key == 75)/*Å©*/
 	{
 		g_Position.x--;
 
-		Collision('*');
-		Collision('|');
+		Collision('*', '|');
 	}
 	else if (_key == 77)/*Å®ÉLÅ[*/
 	{
 		g_Position.x++;
 
-		Collision('*');
-		Collision('|');
+		Collision('*', '|');
 	}
 }
 
-void Collision(char collisionLetters)
+void Collision(char collisionLetters1, char collisionLetters2)
 {
-	if (GetMap(g_Position.x, g_Position.y) == collisionLetters)
+	if (GetMap(g_Position.x, g_Position.y) == collisionLetters1 || GetMap(g_Position.x, g_Position.y) == collisionLetters2)
 	{
 		g_Position = g_OldPosition;
 	}
