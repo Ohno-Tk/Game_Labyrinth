@@ -1,6 +1,4 @@
 /*=============================================================================
-  Author
-	Ohno Takuya
 
   Create
 	2017/6/10
@@ -48,12 +46,12 @@ char g_MAPdata[MAP_HEIGHT][MAP_WIDTH] = {
 
 void InitializeMap(void)
 {
-	srand((unsigned)time(NULL));// Œ»İ‚©‚ç‚ğŒ³‚ÉƒV[ƒh’l‚ğ¶¬
+	srand((unsigned)time(NULL));// ï¿½ï¿½ï¿½İï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒVï¿½[ï¿½hï¿½lï¿½ğ¶ï¿½
 
 	int _x, _z;
 	int _random;
 
-	/*ã‰º¶‰E‚É•Ç‚ğoŒ»*/
+	/*ï¿½ã‰ºï¿½ï¿½ï¿½Eï¿½É•Ç‚ï¿½ï¿½oï¿½ï¿½*/
 	for (_z = 2;_z < 21;_z += 2)
 	{
 		for (_x = 3;_x < 46;_x += 2)

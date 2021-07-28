@@ -1,6 +1,4 @@
 /*=============================================================================
-  Author
-	Ohno Takuya
 
   Create
 	2017/6/9
@@ -51,25 +49,25 @@ void Move(void)
 
 	g_OldPosition = g_Position;
 
-	if (_key == 72)/*ª*/
+	if (_key == 72)/*ï¿½ï¿½*/
 	{
 		g_Position.y--;
 
 		Collision('*', '-');
 	}
-	else if (_key == 80)/*«*/
+	else if (_key == 80)/*ï¿½ï¿½*/
 	{
 		g_Position.y++;
 
 		Collision('*', '-');
 	}
-	else if (_key == 75)/*©*/
+	else if (_key == 75)/*ï¿½ï¿½*/
 	{
 		g_Position.x--;
 
 		Collision('*', '|');
 	}
-	else if (_key == 77)/*¨ƒL[*/
+	else if (_key == 77)/*ï¿½ï¿½ï¿½Lï¿½[*/
 	{
 		g_Position.x++;
 
